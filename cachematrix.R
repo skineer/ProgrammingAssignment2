@@ -1,34 +1,38 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Objective: Avoid to compute the same matrix inversion twice.
+## Explicit is better than implicit
 
-## Write a short comment describing this function
+## Objective: Check if the matrix invertion has been already done before
+## Input: A square matrix
 
 makeCacheMatrix <- function(x = matrix()) {
-    m <- NULL
-    set <- function(y) {
-        x <<- y
-        m <<- NULL
+    inv <- NULL
+
+    get <- function(){
+        return(x)
+    } 
+    
+    setinv <- function(inverted){
+        return(inv <<- inverted)
     }
-    get <- function() x
-    setmean <- function(mean) m <<- mean
-    getmean <- function() m
-    return(list(set = set, get = get,
-         setmean = setmean,
-         getmean = getmean))
+    
+    getinv <- function(){
+        return(inv)
+    } 
+    
+    return(list(get = get, setinv = setinv, getinv = getinv))
 }
 
 
-## Write a short comment describing this function
+## Calculate the matrix invertion or return the value already calculated before
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-    m <- x$getmean()
-    if(!is.null(m)) {
-        message("getting cached data")
-        return(m)
+    inv <- x$getinv()
+    if(!is.null(inv)) {
+        message("Getting Cached Data ...")
+        return(inv)
     }
     data <- x$get()
-    m <- solve(data, ...)
-    x$setmean(m)
-    m
+    inv <- solve(data, ...)
+    x$setinv(inv)
+    return(print(inv))
 }
